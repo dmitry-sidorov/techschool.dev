@@ -19,6 +19,26 @@ defmodule TechschoolWeb.SearchLiveTest do
     "C++"
   ]
 
+  @frameworks [
+    "Phoenix",
+    "Ruby on Rails",
+    "Laravel",
+    "React",
+    "Vue",
+    "Angular",
+    "Django",
+    ".NET",
+    "Flask",
+    "Hanami",
+    "Express.js",
+    "Nest.js",
+    "Next.js",
+    "Adonis.js",
+    "Spring",
+    "Hibernate",
+    "Fastify"
+  ]
+
   defp url_generator do
     domains = [
       "net",
@@ -42,9 +62,13 @@ defmodule TechschoolWeb.SearchLiveTest do
     %Language{name: language, image_url: url_generator()}
   end
 
+  defp gen_languages() do
+    @languages |> Enum.map(fn language -> language_generator(language) end)
+  end
+
   describe "search courses" do
     test "some", %{conn: conn} do
-      @languages |> Enum.map(fn language -> language_generator(language) end) |> dbg()
+      gen_languages() |> dbg()
       assert true
     end
   end
