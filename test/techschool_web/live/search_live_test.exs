@@ -7,6 +7,18 @@ defmodule TechschoolWeb.SearchLiveTest do
 
   use ExUnitProperties
 
+  @languages [
+    "Elixir",
+    "Ruby",
+    "JavaScript",
+    "TypeScript",
+    "Python",
+    "Java",
+    "C",
+    "C#",
+    "C++"
+  ]
+
   defp url_generator do
     domains = [
       "net",
@@ -26,33 +38,13 @@ defmodule TechschoolWeb.SearchLiveTest do
     StreamData.resize(generator, 40)
   end
 
-  defp language_generator do
-    generator =
-      ExUnitProperties.gen(
-        all(
-          name <-
-            StreamData.member_of([
-              "Elixir",
-              "Ruby",
-              "JavaScript",
-              "TypeScript",
-              "Python",
-              "Java",
-              "C",
-              "C#",
-              "C++"
-            ]),
-          image_url <- url_generator()
-        ) do
-          %Language{name: name, image_url: image_url}
-        end
-      )
+  defp language_generator(language) do
+    %Language{name: language, image_url: url_generator()}
   end
 
   describe "search courses" do
     test "some", %{conn: conn} do
-      # Techschool.Courses.list_courses() |> dbg()
-      Enum.take(language_generator(), 10) |> dbg()
+      @languages |> Enum.map(fn language -> language_generator(language) end) |> dbg()
       assert true
     end
   end
