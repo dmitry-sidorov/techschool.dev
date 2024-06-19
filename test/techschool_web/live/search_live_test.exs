@@ -1,4 +1,5 @@
 defmodule TechschoolWeb.SearchLiveTest do
+  alias Techschool.Languages.Language
   use TechschoolWeb.ConnCase
 
   import Phoenix.LiveViewTest
@@ -6,11 +7,11 @@ defmodule TechschoolWeb.SearchLiveTest do
 
   use ExUnitProperties
 
-  defp email_generator do
+  defp url_generator do
     domains = [
-      "gmail.com",
-      "hotmail.com",
-      "yahoo.com"
+      "net",
+      "com",
+      "pt"
     ]
 
     generator =
@@ -19,10 +20,10 @@ defmodule TechschoolWeb.SearchLiveTest do
                              name != "",
                              domain <- StreamData.member_of(domains)
                            ) do
-        name <> "@" <> domain
+        "https://www." <> name <> "." <> domain
       end
 
-    StreamData.resize(generator, 30)
+    StreamData.resize(generator, 40)
   end
 
   defp language_generator do
@@ -41,9 +42,9 @@ defmodule TechschoolWeb.SearchLiveTest do
               "C#",
               "C++"
             ]),
-          image_url <- email_generator()
+          image_url <- url_generator()
         ) do
-          %{name: name, image_url: image_url}
+          %Language{name: name, image_url: image_url}
         end
       )
   end
